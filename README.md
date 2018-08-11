@@ -11,7 +11,7 @@ Setup:
 
 -   Create an user in AWS IAM with apt rights eg: sls-usr.
 -   Configure Serverless framework in your system with the user profile (created in previous step) by providing key and secret:
-    `serverless config credentials --provider aws --key key-created-for-sls-usr --secret sls-usr-secret --profile sls-user-name`
+    `serverless config credentials --provider aws --key key-created-for-sls-usr --secret sls-usr-secret --profile sls-usr`
 
 Create a lambda function by using `serverless create`:
 
