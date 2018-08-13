@@ -21,15 +21,15 @@ module.exports.process = (event, context, callback) => {
     //Step 2: Put in S3
 
     //Step 3: Delete SQS message
-    var params = {
-        QueueUrl: 'sqsUrl',
-        ReceiptHandle: data.ReceiptHandle
-    };
-    sqs.deleteMessage(params, function(err, data) {
-        if (err) console.log(err, err.stack);
-        // an error occurred
-        else console.log(data); // successful response
-    });
+    // var params = {
+    //     QueueUrl: 'sqsUrl',
+    //     ReceiptHandle: data.ReceiptHandle
+    // };
+    // sqs.deleteMessage(params, function(err, data) {
+    //     if (err) console.log(err, err.stack);
+    //     // an error occurred
+    //     else console.log(data); // successful response
+    // });
 
     // Return response
     const response = {
