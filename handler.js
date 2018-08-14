@@ -40,10 +40,7 @@ module.exports.process = (event, context, callback) => {
                                 (Date.now() - startDateTime) / 1000
                             )} seconds. Remaining Time : ${context.getRemainingTimeInMillis()}`
                         );
-                        callback(null, {
-                            statusCode: 200,
-                            body: 'successful deletion'
-                        });
+                        callback(null, response);
                     }
                 });
             }
