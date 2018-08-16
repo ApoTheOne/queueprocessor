@@ -26,39 +26,7 @@ module.exports.process = (event, context, callback) => {
                 body: JSON.stringify(data.Messages[0])
             };
 
-            sendEmail();
             deleteMsg();
-
-            function sendEmail() {
-                nodemailer.createTestAccount((err, account) => {
-                    let transporter = nodemailer.createTransport({
-                        host: '145.224.216.21',
-                        port: 25,
-                        secure: false
-                    });
-
-                    var mailMsg = JSON.parse(data.Messages[0]);
-
-                    let mailOptions = {
-                        from: mailMsg.from,
-                        to: mailMsg.to,
-                        subject: mailMsg.subject,
-                        html: mailMsg.body
-                    };
-
-                    transporter.sendEmail(mailOptions, (error, info) => {
-                        if (error) {
-                            return console.log(error);
-                        }
-                        console.log(`Message sent ${info.messageId}`);
-                        console.log(
-                            `Preview URL : ${nodemailer.getTestMessageUrl(
-                                info
-                            )}`
-                        );
-                    });
-                });
-            }
 
             function deleteMsg() {
                 sqs.deleteMessage(deleteParams, function(err, data) {

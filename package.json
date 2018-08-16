@@ -16,9 +16,7 @@
         "url": "https://github.com/ApoTheOne/queueprocessor/issues"
     },
     "homepage": "https://github.com/ApoTheOne/queueprocessor#readme",
-    "dependencies": {
-        "nodemailer": "^4.6.8"
-    },
+    "dependencies": {},
     "devDependencies": {
         "serverless": "^1.30.0"
     }
