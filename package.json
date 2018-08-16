@@ -1,0 +1,25 @@
+{
+    "name": "queueprocessor",
+    "version": "1.0.0",
+    "description": "process emails from sqs via lamda function and move to s3",
+    "main": "handler.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ApoTheOne/queueprocessor.git"
+    },
+    "author": "Apo",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ApoTheOne/queueprocessor/issues"
+    },
+    "homepage": "https://github.com/ApoTheOne/queueprocessor#readme",
+    "dependencies": {
+        "nodemailer": "^4.6.8"
+    },
+    "devDependencies": {
+        "serverless": "^1.30.0"
+    }
+}

@@ -1,5 +1,3 @@
-frameworkVersion: '=1.30.0'
-
 service: emailProcessor
 
 provider:
@@ -26,6 +24,7 @@ functions:
         handler: handler.process
         description: process emails from sqs and put html in s3
         events:
+            - http: get process
             - schedule:
                   name: task-US
                   description: Email processor task for US

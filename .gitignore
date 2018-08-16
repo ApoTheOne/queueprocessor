@@ -5,6 +5,9 @@ jspm_packages
 # Serverless directories
 .serverless
 
+# Visual Studio Code files
+.vscode/
+
 # Logs
 logs
 *.log

@@ -34,6 +34,9 @@ To deploy:
 To test the function:
 `sls invoke --function functionName --logs`
 
+Test function locally:
+`sls invoke local --function functionName`
+
 After updating a function in order to avoid updating whole stack, we can update a single function by:
 `sls deploy function --function functionName`
 
