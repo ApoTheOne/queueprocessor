@@ -5,7 +5,7 @@ const s3 = new AWS.S3();
 const sqs = new AWS.SQS();
 
 var params = {
-    QueueUrl: process.env.SqsUrl
+    QueueUrl: process.env.sqsUrl
 };
 
 module.exports.process = (event, context, callback) => {
