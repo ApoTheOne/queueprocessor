@@ -26,3 +26,23 @@ Check service, providers (name, runtime, profile: sls-user-name, region)
 
 To deploy:
 `sls deploy -v`
+
+---
+
+To locally debug via VS Code:
+- Install serverless as a dev dependency `npm install serverless -D`
+- Add launch.json in .vscode:
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug process",
+            "program": "${workspaceFolder}\\node_modules\\serverless\\bin\\serverless",
+            "args": ["invoke", "local", "-f", "process", "--data", "{}"]
+        }
+    ]
+}
+```
