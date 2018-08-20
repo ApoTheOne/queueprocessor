@@ -37,6 +37,28 @@ To test the function:
 Test function locally:
 `sls invoke local --function functionName`
 
+---
+
+To locally debug via VS Code:
+- Install serverless as a dev dependency `npm install serverless -D`
+- Add launch.json in .vscode:
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug process",
+            "program": "${workspaceFolder}\\node_modules\\serverless\\bin\\serverless",
+            "args": ["invoke", "local", "-f", "process", "--data", "{}"]
+        }
+    ]
+}
+```
+
+---
+
 After updating a function in order to avoid updating whole stack, we can update a single function by:
 `sls deploy function --function functionName`
 
