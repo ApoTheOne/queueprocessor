@@ -6,9 +6,10 @@ provider:
     profile: apofc
     region: us-east-1
     memorySize: 128
-    timeout: 35
+    timeout: 6
     environment:
-        sqsUrl: 'queueUrl'
+        sqsUrl: 'sqsQueueUrl'
+        s3Url: 's3BucketUrl'
     iamRoleStatements:
         - Effect: Allow
           Action:

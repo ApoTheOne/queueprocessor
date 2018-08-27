@@ -1,53 +1,29 @@
 'use strict';
-const AWS = require('aws-sdk');
-const mailer = require('nodemailer');
+const sqs = require('./sqs');
+const s3 = require('./s3');
 
-const s3 = new AWS.S3();
-const sqs = new AWS.SQS();
-
-var sqsParams = {
-    QueueUrl: process.env.sqsUrl
-};
+const sqsUrl = 'https://sqs.us-east-1.amazonaws.com/338805238106/test.fifo';
+const s3Url = 'process-emails-dev';
 
 module.exports.process = (event, context, callback) => {
-    sqs.receiveMessage(sqsParams, function(err, data) {
+    sqs.getMessages(sqsUrl, function(err, data) {
         if (err) {
-            console.log('Receive Error', err);
+            console.log(`Error in getting messages ${err}`);
+            callback(err);
         } else if (data.Messages) {
-            var deleteParams = {
-                QueueUrl: sqsParams.QueueUrl,
-                ReceiptHandle: data.Messages[0].ReceiptHandle
-            };
-            var startDateTime = Date.now();
             console.log(data.Messages, null, 2);
-
-            const response = {
-                statusCode: 200,
-                body: JSON.stringify(data.Messages[0])
-            };
-
-            deleteMsg();
-
-            function deleteMsg() {
-                sqs.deleteMessage(deleteParams, function(err, data) {
-                    if (err) {
-                        console.log(`Oooops error : ${err}`);
-                        callback(err);
-                    } else {
-                        console.log(
-                            `Message deleted: ${
-                                deleteParams.ReceiptHandle
-                            } after ${Math.floor(
-                                (Date.now() - startDateTime) / 1000
-                            )} seconds. Remaining Time : ${context.getRemainingTimeInMillis()}`
-                        );
-                        callback(null, response);
-                    }
-                });
-            }
+            s3.putObject(s3Url, data.Messages[0], function(err, data) {
+                if (err) {
+                    console.log(`Error while uploading data to s3: ${err}`);
+                    callback(err);
+                } else {
+                    const response = {
+                        statusCode: 200,
+                        body: JSON.stringify(data)
+                    };
+                    callback(response);
+                }
+            });
         }
     });
-
-    // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-    // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
 };
