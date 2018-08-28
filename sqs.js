@@ -11,8 +11,8 @@ module.exports.getMessages = function getMessages(queueUrl, cb) {
     };
     sqs.receiveMessage(sqsParams, function(error, data) {
         if (error) {
-            console.log('Error while receiving message: ', error);
-            cb(error);
+            console.error(error, null, 2);
+            cb(error, null, 2);
         } else if (data.Messages) {
             console.log(data.Messages, null, 2);
             cb(null, data);
@@ -20,17 +20,20 @@ module.exports.getMessages = function getMessages(queueUrl, cb) {
     });
 };
 
-module.exports.deleteMessage = function deleteMsg(queueUrl, receiptHandle, cb) {
+module.exports.deleteMessage = function deleteMessage(
+    queueUrl,
+    receiptHandle,
+    cb
+) {
     const deleteParams = {
         QueueUrl: queueUrl,
         ReceiptHandle: receiptHandle
     };
     sqs.deleteMessage(deleteParams, function(err, data) {
         if (err) {
-            console.log(`Error while deleting message : ${err}`);
+            console.error(err, null, 2);
             cb(err);
         } else {
-            console.log(`Message deleted: ${deleteParams.ReceiptHandle}`);
             cb(null, {
                 statusCode: 200,
                 body: 'Message processed and deleted.'

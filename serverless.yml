@@ -4,12 +4,13 @@ provider:
     name: aws
     runtime: nodejs6.10
     profile: apofc
-    region: us-east-1
+    region: ${opt:region, 'us-east-1'}
     memorySize: 128
     timeout: 6
     environment:
-        sqsUrl: 'sqsQueueUrl'
-        s3Url: 's3BucketUrl'
+        sqsUrl: ${s3:saltConfig/sqsUrl}
+        s3Url: ${s3:saltConfig/s3Url}
+        numOfMsgToReadFromSQS: ${env:numOfMsg}
     iamRoleStatements:
         - Effect: Allow
           Action:
@@ -20,6 +21,10 @@ provider:
               - 's3:*'
           Resource: '*'
 
+custom:
+    globalSchedule: rate(5 minutes)
+    schedulerEnabled: false
+
 functions:
     process:
         handler: handler.process
@@ -29,20 +34,20 @@ functions:
             - schedule:
                   name: task-US
                   description: Email processor task for US
-                  rate: rate(5 minutes)
-                  enabled: false
+                  rate: ${self:custom.globalSchedule}
+                  enabled: ${self:custom.schedulerEnabled}
                   input:
                       countryCode: US
             - schedule:
                   name: task-GB
                   description: Email processor task for GB
-                  rate: rate(5 minutes)
-                  enabled: false
+                  rate: ${self:custom.globalSchedule}
+                  enabled: ${self:custom.schedulerEnabled}
                   input:
                       countryCode: GB
 
 resources:
-    ? Resources
+    ? Resources: ${file(cloudformation-resources.json)}
 
 # plugins:
 #     - serverless-offline

@@ -2,26 +2,33 @@
 const sqs = require('./sqs');
 const s3 = require('./s3');
 
-const sqsUrl = 'https://sqs.us-east-1.amazonaws.com/338805238106/test.fifo';
-const s3Url = 'process-emails-dev';
+const sqsUrl = process.env.sqsUrl;
+const s3Url = process.env.s3Url;
 
 module.exports.process = (event, context, callback) => {
     sqs.getMessages(sqsUrl, function(err, data) {
         if (err) {
-            console.log(`Error in getting messages ${err}`);
+            console.error(err, null, 2);
             callback(err);
         } else if (data.Messages) {
             console.log(data.Messages, null, 2);
+            const receiptHandle = data.Messages[0].ReceiptHandle;
             s3.putObject(s3Url, data.Messages[0], function(err, data) {
                 if (err) {
-                    console.log(`Error while uploading data to s3: ${err}`);
+                    console.error(err, null, 2);
                     callback(err);
                 } else {
-                    const response = {
-                        statusCode: 200,
-                        body: JSON.stringify(data)
-                    };
-                    callback(response);
+                    sqs.deleteMessage(sqsUrl, receiptHandle, function(
+                        error,
+                        response
+                    ) {
+                        if (error) {
+                            console.error(error, null, 2);
+                            callback(error);
+                        } else {
+                            callback(null, response);
+                        }
+                    });
                 }
             });
         }
