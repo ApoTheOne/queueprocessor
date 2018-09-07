@@ -1,6 +1,6 @@
 # queueprocessor
 
-Process queued items from SQS via Aws lambda function and put them in S3 bucket as a we page.
+Process queued items from SQS via Aws lambda function and put them in S3 bucket as a web page.
 
 Installation:
 
@@ -76,3 +76,15 @@ Cleanup:
     `keyname: ${env:varname}`
 -   To use a value from S3 bucket:  
     `${s3:bucketName/keyName}`
+- Create custom variables and then use them:  
+
+    Creation:  
+    ```
+    custom:
+        keyname: somevalue
+    ```
+    Usage:  
+    ```
+    ${self:custom.keyname}
+    ```
+- 
